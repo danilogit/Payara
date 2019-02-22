@@ -128,10 +128,12 @@ public class ListInstancesCommand implements AdminCommand {
 
     @Override
     public void execute(AdminCommandContext context) {
+        Logger logger = context.getLogger();
+
         // setup
         int timeoutInMsec;
         try {
-            timeoutInMsec = Integer.parseInt(timeoutmsec);
+            timeoutInMsec = Integer.parseInt(System.getenv("PAYARA_INSTANCE_INFO_TIMEOUT"));
         }
         catch (Exception e) {
             timeoutInMsec = 60000;
@@ -140,7 +142,7 @@ public class ListInstancesCommand implements AdminCommand {
         report = context.getActionReport();
         top = report.getTopMessagePart();
 
-        Logger logger = context.getLogger();
+        logger.warning("PAYARA_INSTANCE_INFO_TIMEOUT: " + timeoutInMsec);
 
         if (!validateParams()) {
             return;
